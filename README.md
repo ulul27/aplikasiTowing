@@ -1,45 +1,36 @@
-saya ingin membuat aplikasi towing dimana nanti biaya jasa pengangkutan mesin industri, mobil, motor
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-rencana nya berisi :
-1. nama pemesan
-2. lokasi = alamat lengkap
-3. tambahan lokasi pakai koordinat seperti bernagi lokasi whatsapp
-4. jenis barang apa yang diangkut
-5. harga jasa dari lokasi penjemputan ke lokasi pengantaran, yang ambil data biaya kalau bisa ambil dari rician biaya aplikasi gojek, grab , dll
+## Getting Started
 
-=====================
+First, run the development server:
 
-ini jawaban dari saya untuk pertanyaan AI :
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-1. Aplikasi akan di bangun untuk platform website
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-menggunakan teknologi next.js
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-2. iya hanya berisi form untuk Customer mengirim pesanan
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-tidak diperlukan membuat aplikasi terpisah (atau menu khusus) untuk Driver/Sopir Towing menerima pesanan tersebut
+## Learn More
 
-iya saya perlu halaman Admin Dashboard untuk melihat semua data pesanan yang masuk
+To learn more about Next.js, take a look at the following resources:
 
-3. saya setuju menggunakan formula perhitungan harga sendiri
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-tarif dasar Rp. 150.000
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-peerbedaan jika mengangkut motor kecil tarif dasar + Rp 0
-mengangkut motor besar tarif dasar + Rp 50.000
-mengangkut mobil kecil tarif dasar + Rp 100.000
-mengangkut mobil besar tarif dasar + Rp 150.000
-mengangkut mesin industri tarif dasar + Rp 200.000
+## Deploy on Vercel
 
-4. hanya menggunakan titik koordinat peta (Google Maps) 
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-5. setelah form diisi maka tombol pesan muncul , dan customer bisa melihat rincian biaya dan lokasi tujuan
-
-iya begitu tombol pesan di klik masuk ke database kita lalu di arahkan juga ke whatsapp admin
-
-database pakai supabase
-
-pembayaran transfer manual via rek bank 
-
-
-
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
