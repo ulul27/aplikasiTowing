@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Navigation, Info, ArrowRight, Loader2, Search } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 import citiesData from "@/data/cities.json";
 
 // Mock Map data
@@ -116,6 +117,7 @@ export default function BookingForm() {
   const [isCalculating, setIsCalculating] = useState(false);
   const [distance, setDistance] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (formData.pickup && formData.dropoff) {
@@ -142,11 +144,33 @@ export default function BookingForm() {
     if (step === 2 && formData.pickup && formData.dropoff) setStep(3);
   };
 
-  const handleBook = () => {
-    const adminPhone = "6285740004600";
-    const typeLabel = VEHICLE_TYPES.find(v => v.id === formData.itemType)?.label;
-    
-    const text = `Halo Admin TowingPro,
+  const handleBook = async () => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .insert([{
+          customer_name: formData.name,
+          item_type: formData.itemType,
+          pickup_lat: formData.pickup.lat,
+          pickup_lng: formData.pickup.lng,
+          dropoff_lat: formData.dropoff.lat,
+          dropoff_lng: formData.dropoff.lng,
+          distance_km: distance,
+          total_price: totalPrice
+        }]);
+
+      if (error) {
+        console.error("Error saving to Supabase:", error);
+        alert("Gagal menyimpan pesanan ke database.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      const adminPhone = "6285740004600";
+      const typeLabel = VEHICLE_TYPES.find(v => v.id === formData.itemType)?.label;
+      
+      const text = `Halo Admin TowingPro,
 Saya ingin memesan jasa towing dengan detail:
 
 Nama: ${formData.name}
@@ -158,8 +182,14 @@ Total Harga: Rp ${totalPrice.toLocaleString("id-ID")}
 
 Mohon info untuk pembayaran, terima kasih.`;
 
-    const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/${adminPhone}?text=${encodedText}`, "_blank");
+      const encodedText = encodeURIComponent(text);
+      window.open(`https://wa.me/${adminPhone}?text=${encodedText}`, "_blank");
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan saat menyimpan data.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -343,9 +373,17 @@ Mohon info untuk pembayaran, terima kasih.`;
                   </button>
                   <button 
                     onClick={handleBook}
-                    className="w-2/3 bg-green-500 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
+                    disabled={isSubmitting}
+                    className="w-2/3 bg-green-500 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition-all shadow-lg shadow-green-500/20 disabled:opacity-70 disabled:cursor-wait"
                   >
-                    Pesan via WhatsApp
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Memproses...
+                      </>
+                    ) : (
+                      "Pesan via WhatsApp"
+                    )}
                   </button>
                 </div>
               </>
